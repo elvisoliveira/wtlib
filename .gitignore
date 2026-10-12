@@ -1,0 +1,8 @@
+# Allowlist: ignore everything except the converter itself.
+# Never commit disc content or generated databases.
+*
+!.gitignore
+!README.md
+!export_sqlite.py
+!export_2015.py
+!wt2015.py
