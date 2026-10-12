@@ -23,10 +23,10 @@ character encoding, both reimplemented here from scratch.
 
 | Edition | Layout | Script |
 |---|---|---|
-| 1995 (Win16) | `WT_DATA_.E/<PUB>/DOCSFILE`, `PUBINFO` | `export_sqlite.py` |
-| 2015 | `rs_data/PUBS/<PUB>/<PUB>.PUB` (URES container) | `export_2015.py` |
+| 1995, 1997 (Win16) | `WT_DATA_.E/<PUB>/DOCSFILE`, `PUBINFO` | `export_sqlite.py` |
+| 2001, 2003, 2005, 2008, 2012, 2015 | `rs_data/PUBS/<PUB>/<PUB>.PUB` (URES container) | `export_2015.py` |
 
-Other editions between these were not tested and may use other formats.
+All listed editions were tested end to end (English). Other editions or languages may differ.
 
 ## Usage
 

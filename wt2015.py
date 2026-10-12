@@ -310,9 +310,13 @@ def pub_documents(d):
     ndocs, secs = ures_sections(d)
     ctx_at = d.find(b'\xd0\x07\xcf\x07', secs[8][0])
     m, _ = mtec3_context(d, ctx_at)
-    base = secs[4][0]
-    offs = struct.unpack_from('<%dI' % (ndocs + 1), d, base + 17)
-    data = base + 17 + 4 * (ndocs + 1)
+    # document offset table after a 16-byte id; newer files insert one extra byte before it
+    # (the first offset is always 0, which tells the two layouts apart)
+    base = secs[4][0] + 16
+    if struct.unpack_from('<I', d, base)[0] != 0:
+        base += 1
+    offs = struct.unpack_from('<%dI' % (ndocs + 1), d, base)
+    data = base + 4 * (ndocs + 1)
     for i in range(ndocs):
         b = d[data + offs[i]: data + offs[i + 1]]
         bp = 0; hdr = []
@@ -352,5 +356,7 @@ def pub_info(d, secs):
             info[tag] = struct.unpack_from('<H', d, p + 1)[0]; p += 3
         else:
             n = struct.unpack_from('<H', d, p + 1)[0]
+            if p + 3 + n > end:   # malformed/unknown record: keep what was read so far
+                break
             info[tag] = struct.unpack_from('<%dH' % (n // 2), d, p + 3); p += 3 + n
     return info
